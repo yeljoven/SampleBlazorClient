@@ -1,0 +1,46 @@
+﻿@page "/Test2"
+<h3>Test2</h3>
+
+<h1></h1>
+<input type="number" placeholder="FirstNumber" @bind="FirstNumber" @bind:event="oninput">
+<input type="number" placeholder="FirstNumber" @bind="SecondNumber" @bind:event="oninput">
+
+<h2>@FirstNumber + @SecondNumber = @Sum </h2>
+<h2>@FirstNumber - @SecondNumber = @Difference </h2>
+<h2>@FirstNumber * @SecondNumber = @Product </h2>
+<h2>@FirstNumber / @SecondNumber = @Quotient </h2>
+@code {
+    public decimal FirstNumber { get; set; } = 1;
+    public decimal SecondNumber { get; set; } = 1;
+    public decimal Sum
+    {
+        get => GetSum();
+    }
+    public decimal Product { get=> GetProduct(); }
+    public decimal Quotient { get=>GetQuotient(); }
+    public decimal Difference { get=>GetDifference(); }
+
+    public decimal GetSum()
+    {
+        return FirstNumber + SecondNumber;
+    }
+
+    public decimal GetDifference()
+    {
+        return FirstNumber - SecondNumber;
+    }
+
+    public decimal GetProduct()
+    {
+        return FirstNumber * SecondNumber;
+    }
+
+    public decimal GetQuotient()
+    {
+        if (FirstNumber == 0 || SecondNumber == 0) return 0;
+        return FirstNumber / SecondNumber;
+        
+    }
+
+
+}

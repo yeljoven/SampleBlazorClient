@@ -1,0 +1,58 @@
+﻿@page "/Test3"
+<h3>User Data</h3>
+
+<input type="text" placeholder="Insert First Name" @bind="FirstName" @bind:event="oninput">
+<input type="text" placeholder="Insert Middle Name" @bind="MiddleName" @bind:event="oninput">
+<input type="text" placeholder="Insert Last Name" @bind="LastName" @bind:event="oninput">
+<input type="text" placeholder="How old are you?" @bind="Age" @bind:event="oninput">
+<select name="Gender" id="" @bind="Gender" @bind:event="oninput">
+    <option value="Select Gender" disabled selected >Select Gender</option>
+    <option value="Male">Male</option>
+    <option value="Female">Female</option>
+</select>
+<select name="Marital Status" id="" @bind="MaritalStatus" @bind:event="oninput">
+    <option value="Select Marital Status" disabled selected >Select Marital Status</option>
+    <option value="Single">Single</option>
+    <option value="Married">Married</option>
+    <option value="Divorced">Divorced</option>
+    <option value="Widowed">Widowed</option>
+    
+</select>
+<hr>
+@if (MaritalStatus == "Married" || MaritalStatus == "Divorced" || MaritalStatus == "Widowed")
+{
+    <input type="text" placeholder="Name of spouse" @bind="SpouseName" @bind:event="oninput">
+    
+}
+
+<hr>
+<h2>My name is @FullName. I am @Age years old and I'm @MaritalStatus
+    @if (MaritalStatus == "Married" || MaritalStatus == "Divorced" || MaritalStatus == "Widowed")
+    {
+        <span>
+            to @SpouseName
+        </span>  
+    }
+    </h2>
+<h3>Gender: @Gender</h3>
+
+@code {
+    public string FirstName { get; set; }
+    public string MiddleName { get; set; }
+    public string LastName { get; set; }
+    public string FullName { get=> GetFullName(FirstName, MiddleName, LastName); }
+    public int Age { get; set; }
+    public string MaritalStatus { get; set; }
+    public string Gender { get; set; }
+    public string SpouseName { get; set; }
+    
+    public string GetFullName(string firstname, string middlename, string lastname)
+    {
+        //string fullname = firstname + " " + middlename+ " " + lastname;
+        string fullname = $"{firstname} {middlename} {lastname}";
+        return fullname;
+
+    }
+    
+
+}

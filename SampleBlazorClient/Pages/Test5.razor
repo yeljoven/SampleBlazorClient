@@ -1,0 +1,32 @@
+﻿@page "/Test5"
+<h3>Test5</h3>
+
+<input type="text" placeholder @bind="Name" @bind:event="oninput">
+<button @onclick="AddName" >Add to List</button>
+<button @onclick="ReverseList" >Reverse List</button>
+@foreach (var names in namesList)
+{
+    <h2>
+        @names
+    </h2>
+}
+
+@code
+{
+    public string Name { get; set; }
+
+    List<string> namesList = new List<string>()
+    {
+
+    };
+
+    private void AddName()
+    {
+        namesList.Add(Name);
+    }
+
+    private void ReverseList()
+    {
+        namesList.Sort();
+    }
+}

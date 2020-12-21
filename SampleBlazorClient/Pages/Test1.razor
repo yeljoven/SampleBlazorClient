@@ -1,0 +1,29 @@
+﻿@page "/Test1"
+<h3>Test1</h3>
+
+<h1>Type your name here</h1>
+<input type="text" placeholder="First Name" @bind="FirstName" @bind:event="oninput">
+<input type="text" placeholder="Last Name" @bind="LastName" @bind:event="oninput">
+
+<br>
+<h1>Your full name is @FullName</h1>
+
+
+@code {
+
+    private string FirstName { get; set; }
+    private string LastName { get; set; }
+
+    private string FullName
+    {
+        get => GetFullName(FirstName, LastName);
+    }
+
+    private string GetFullName(string firstname, string lastname)
+    {
+        string fullname = firstname + " " + lastname;
+        return fullname;
+
+    }
+
+}

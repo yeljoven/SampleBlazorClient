@@ -1,0 +1,113 @@
+﻿@page "/BankRupHome"
+@inject IJSRuntime JsRuntime
+
+<h3>Add BankRup User</h3>
+
+<input type="text" placeholder="First Name" @bind="NewPerson.FirstName" @bind:event="oninput">
+<input type="text" placeholder="Last Name" @bind="NewPerson.LastName" @bind:event="oninput">
+<select name="Location" id="" @bind="NewPerson.City" @bind:event="oninput">
+    <option value="0" disabled selected>Select City</option>
+    <option value="Imus">Imus</option>
+    <option value="Dasma">Dasma</option>
+    <option value="Bacoor">Bacoor</option>
+</select> <br>
+
+<br>
+<input type="text" placeholder="Contact Number" @bind="NewPerson.ContactNumber" @bind:event="oninput">
+<input type="text" placeholder="Email Address" @bind="NewPerson.EmailAddress" @bind:event="oninput"> <br>
+
+<br>
+<p>Running Balance:</p>
+<input type="text" placeholder="Balance" @bind="NewPerson.Balance" @bind:event="oninput"> <br>
+
+<br>
+<button @onclick="AddUser">Add User</button>
+
+<hr>
+<h2>Transfer Money</h2>
+
+<label for="From">From</label>
+<select name="" id="" @bind="Transaction.From">
+
+    @foreach (var bankRupUser in BankRupUsers)
+    {
+        <option value="@bankRupUser.Guid">@bankRupUser.FirstName @bankRupUser.LastName</option>
+    }
+</select>
+
+<label for="To">To</label>
+<select name="" id=""@bind="Transaction.To">
+    @foreach (var bankRupUser in BankRupUsers)
+    {
+        <option value="@bankRupUser.Guid">@bankRupUser.FirstName @bankRupUser.LastName</option>
+    }
+</select>
+<br>
+<input type="number" placeholder="Amount" @bind="Transaction.Amount" @bind:event="oninput">
+
+<button @onclick="SendMoney">Send</button>
+<hr>
+@foreach (var bankRupUser in BankRupUsers)
+{
+    <h2>
+        @bankRupUser.FirstName @bankRupUser.LastName @bankRupUser.Balance @bankRupUser.City
+
+    </h2>
+}
+
+@code {
+    public Person NewPerson { get; set; } = new Person();
+    public Transaction Transaction { get; set; } = new Transaction();
+
+    List<Person> BankRupUsers = new List<Person>();
+
+    public void AddUser()
+    {
+        if (NewPerson.City == "0"|| NewPerson.City == null)
+        {
+            JsRuntime.InvokeVoidAsync("alert", "Select City");
+            return;
+        }
+        BankRupUsers.Add(new Person()
+        {
+            FirstName = NewPerson.FirstName,
+            LastName = NewPerson.LastName,
+            City = NewPerson.City,
+            EmailAddress = NewPerson.EmailAddress,
+            Balance = NewPerson.Balance,
+            ContactNumber = NewPerson.ContactNumber,
+            Guid = Guid.NewGuid()
+        });
+    }
+
+    public decimal GetCharge(decimal transferAmount)
+    {
+        var charge = BankRupUsers.FirstOrDefault(i=> i.Guid == Transaction.To)?.City switch
+        {
+            "Imus" => transferAmount * (decimal) .25,
+            "Dasma" => transferAmount * (decimal) .10,
+            "Bacoor" => transferAmount * (decimal) .35,
+            _ => 0m
+            };
+        return charge;
+    }
+
+    public void SendMoney()
+    {
+      var fromUser = BankRupUsers.FirstOrDefault(i => i.Guid == Transaction.From);
+      var toUser = BankRupUsers.FirstOrDefault(i => i.Guid == Transaction.To);
+
+        if (fromUser.Balance > (Transaction.Amount + GetCharge(Transaction.Amount)))
+        {
+            fromUser.Balance -= (Transaction.Amount + GetCharge(Transaction.Amount));
+            toUser.Balance += Transaction.Amount;
+        }
+        else
+        {
+            Console.WriteLine("Insufficient Balance. Reload now!");
+            JsRuntime.InvokeVoidAsync("alert", "Insufficient Balance. Reload now!");
+
+        }
+    }
+
+}

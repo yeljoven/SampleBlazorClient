@@ -1,61 +1,7 @@
 ﻿@page "/"
 
-<h1>Paking Calculator</h1>
-<h3>
-    @FirstNumber + @SecondNumber = @TotalSum
-</h3>
+<h1>Hello, world!</h1>
 
-<h3>
-    @FirstNumber / @SecondNumber = @TotalQuotient
-</h3>
+Welcome to your new app.
 
-<h3>
-    @FirstNumber - @SecondNumber = @TotalDifference
-</h3>
-<h3>
-    @FirstNumber * @SecondNumber = @TotalProduct
-</h3>
-
-<br>
-<input type="number" placeholder="Insert first number" step="0.1" @bind="FirstNumber" @bind:event="oninput" >
-<input type="number" placeholder="Insert second number" step="0.1" @bind="SecondNumber" @bind:event="oninput">
-
-@code
-{
-    public double FirstNumber { get; set; } = 1;
-    public double SecondNumber { get; set; } = 1;    
-    public double TotalSum { get =>Add(FirstNumber, SecondNumber); }
-    public double TotalQuotient
-    {
-        get => Divide(FirstNumber, SecondNumber);
-    }
-    public double TotalProduct
-    {
-        get => Multiply(FirstNumber, SecondNumber);
-    }
-    public double TotalDifference
-    {
-        get => Subtract(FirstNumber, SecondNumber);
-    }
-    
-    
-    public double Add(double firstnumber, double secondnumber )
-    {
-        return firstnumber + secondnumber;
-    }
-
-    public double Multiply(double firstnumber, double secondnumber)
-    {
-        return firstnumber * secondnumber;
-    }
-
-    public double Divide(double firstnumber, double secondnumber)
-    {
-        return firstnumber / secondnumber;
-    }
-
-    public double Subtract(double firstnumber, double secondnumber)
-    {
-        return firstnumber - secondnumber;
-    }
-}
+<SurveyPrompt Title="How is Blazor working for you?" />
